@@ -1,4 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 
 /* eslint-disable */
 
@@ -432,7 +436,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
         <!--  WELCOME  -->
         <div id="welcome">
           <h1>
-            <span> Hello there, </span>
+            <span> {{hello}}</span>
             Welcome web 👋
           </h1>
         </div>
@@ -844,7 +848,13 @@ nx affected:e2e</pre>
   encapsulation: ViewEncapsulation.None,
 })
 export class NxWelcomeComponent implements OnInit {
+  electron!: any;
+  hello!: string;
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.electron = (<any>window).electron;
+
+    this.hello = this.electron.hello();
+  }
 }

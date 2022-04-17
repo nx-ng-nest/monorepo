@@ -2,56 +2,39 @@ import { Response } from 'express';
 import { Observable } from 'rxjs';
 
 import {
-  IDataService,
   IReadController,
+  IReadDataService,
 } from '@monorepo/common';
+import { Get } from '@nestjs/common';
 
 import { FindAllOptions } from '../params';
 
-export abstract class ReadController<
-  Entity,
-  CreateDTO,
-  UpdateDTO,
-  DeleteDTO,
-  CreateResponse,
-  UpdateResponse,
-  DeleteResponse
-> implements IReadController<Entity, FindAllOptions<Entity>, Response>
+export class ReadController<Entity>
+  implements IReadController<Entity, FindAllOptions<Entity>, Response>
 {
   constructor(
-    public service: IDataService<
-      Entity,
-      FindAllOptions<Entity>,
-      CreateDTO,
-      UpdateDTO,
-      DeleteDTO,
-      CreateResponse,
-      UpdateResponse,
-      DeleteResponse,
-      Response
-    >
+    public service: IReadDataService<Entity, FindAllOptions<Entity>, Response>
   ) {}
-
-  streamAll(
-    query: FindAllOptions<Entity>,
-    res: Response<any, Record<string, any>>
-  ): void {
-    this.service.streamAll(query, res);
+  async existsByField(field: keyof Entity, value: any): Promise<boolean> {
+    return await this.service.existsByField(field, value);
   }
 
-  steramOne(
+  @Get('stream')
+  async stream(
     query: FindAllOptions<Entity>,
     res: Response<any, Record<string, any>>
-  ): void {
-    this.service.steramOne(query, res);
+  ): Promise<void> {
+    await this.service.stream(query, res);
   }
 
+  @Get()
   findAll(
     query: FindAllOptions<Entity>
   ): Promise<Entity[]> | Observable<Entity[]> {
     return this.service.findAll(query);
   }
 
+  @Get('one')
   findOne(query: FindAllOptions<Entity>): Promise<Entity> | Observable<Entity> {
     return this.service.findOne(query);
   }

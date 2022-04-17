@@ -8,12 +8,16 @@
       "targets": {
         "build": {
           "executor": "@nrwl/node:webpack",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
+            "assets": [
+              "apps/api/src/assets"
+            ]
           },
           "configurations": {
             "production": {
@@ -37,14 +41,20 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/api/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/api/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/api"],
+          "outputs": [
+            "coverage/apps/api"
+          ],
           "options": {
             "jestConfig": "apps/api/jest.config.js",
             "passWithNoTests": true
@@ -55,6 +65,84 @@
     },
     "api-core": "libs/api-core",
     "common": "libs/common",
+    "desktop": {
+      "root": "apps/desktop",
+      "sourceRoot": "apps/desktop/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "nx-electron:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/desktop",
+            "main": "apps/desktop/src/main.ts",
+            "tsConfig": "apps/desktop/tsconfig.app.json",
+            "assets": [
+              "apps/desktop/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/desktop/src/environments/environment.ts",
+                  "with": "apps/desktop/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "nx-electron:execute",
+          "options": {
+            "buildTarget": "desktop:build"
+          }
+        },
+        "package": {
+          "executor": "nx-electron:package",
+          "options": {
+            "name": "desktop",
+            "frontendProject": "web",
+            "outputPath": "dist/packages",
+            "prepackageOnly": true
+          }
+        },
+        "make": {
+          "executor": "nx-electron:make",
+          "options": {
+            "name": "desktop",
+            "frontendProject": "web",
+            "outputPath": "dist/executables"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
+          ],
+          "options": {
+            "lintFilePatterns": [
+              "apps/desktop/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/desktop"
+          ],
+          "options": {
+            "jestConfig": "apps/desktop/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "web": {
       "projectType": "application",
       "root": "apps/web",
@@ -63,7 +151,9 @@
       "targets": {
         "build": {
           "executor": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/web",
             "index": "apps/web/src/index.html",
@@ -71,8 +161,13 @@
             "polyfills": "apps/web/src/polyfills.ts",
             "tsConfig": "apps/web/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/web/src/favicon.ico", "apps/web/src/assets"],
-            "styles": ["apps/web/src/styles.scss"],
+            "assets": [
+              "apps/web/src/favicon.ico",
+              "apps/web/src/assets"
+            ],
+            "styles": [
+              "apps/web/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -118,7 +213,10 @@
               "browserTarget": "web:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/web/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -137,7 +235,9 @@
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/web"],
+          "outputs": [
+            "coverage/apps/web"
+          ],
           "options": {
             "jestConfig": "apps/web/jest.config.js",
             "passWithNoTests": true
@@ -165,14 +265,20 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/web-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/web-e2e/**/*.{js,ts}"
+            ]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": ["web"]
+      "implicitDependencies": [
+        "web"
+      ]
     }
   }
 }

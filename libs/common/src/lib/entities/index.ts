@@ -1,1 +1,2 @@
-export * from "./ISample";
+export * from "./ICommonFields";
+export * from "./IGeneric";

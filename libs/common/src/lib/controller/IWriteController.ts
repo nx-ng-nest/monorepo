@@ -1,28 +1,32 @@
-import { Observable } from 'rxjs';
-
 export interface IWriteController<
   CreateDTO = unknown,
   UpdateDTO = unknown,
-  DeleteDTO = unknown,
-  CreateResponse = unknown,
-  UpdateResponse = unknown,
-  DeleteResponse = unknown
+  DeleteDTO = unknown
 > {
   /**
    * @description Create new entity in database
+   * @throws UnprocessableEntityException
+   * @returns HttpResponse 201
    * @param item
    */
-  save(item: CreateDTO): Promise<CreateResponse> | Observable<CreateResponse>;
+  save(item: CreateDTO): Promise<void> | never;
 
   /**
    * @description Update the entity in database
+   * @throws NotFoundException
+   * @throw UnprocessableEntityException
+   * @return HttpResponse 201
+   * @param id
    * @param item
    */
-  update(item: UpdateDTO): Promise<UpdateResponse> | Observable<UpdateResponse>;
+  update(id: string, item: UpdateDTO): Promise<void> | never;
 
   /**
    * @description Delete the enity in database
-   * @param item
+   * @throws NotFoundException
+   * @throw UnprocessableEntityException
+   * @return HttpResponse 201
+   * @param id
    */
-  delete(item: DeleteDTO): Promise<DeleteResponse> | Observable<DeleteResponse>;
+  delete(id: string): Promise<void> | never;
 }

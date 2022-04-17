@@ -3,11 +3,11 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
 import {
-  NestApplication,
-  NestFactory,
-} from '@nestjs/core';
+  INestApplication,
+  Logger,
+} from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import {
   DocumentBuilder,
   SwaggerModule,
@@ -19,7 +19,7 @@ const APP_VERSION = process.env.APP_VERSION || '0.0.1';
 const PORT = process.env.PORT || 3333;
 const GLOBAL_PREFIX = 'api';
 
-function configureSwagger(app: NestApplication) {
+function configureSwagger(app: INestApplication) {
   const options = new DocumentBuilder()
     .setTitle('Api')
     .setDescription('Database Api')
@@ -35,6 +35,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix(GLOBAL_PREFIX);
+
+  configureSwagger(app);
+
   await app.listen(PORT);
 
   logger.log(

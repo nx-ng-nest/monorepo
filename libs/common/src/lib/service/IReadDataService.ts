@@ -1,6 +1,6 @@
 import { IReadController } from '../controller';
 
-export interface IDataService<
+export interface IReadDataService<
   Entity = unknown,
   QueryOptions = unknown,
   HttpResponse = unknown
